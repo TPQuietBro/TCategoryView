@@ -13,6 +13,7 @@ static NSInteger TempTag = 12121212121;
 @interface TCategoryHeaderView()
 @property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, strong) NSMutableArray *buttons;
+@property (nonatomic, strong) UIButton *preButton;
 @end
 @implementation TCategoryHeaderView
 - (instancetype)initWithTitles:(NSArray *)titles
@@ -32,9 +33,16 @@ static NSInteger TempTag = 12121212121;
         [self addSubview:button];
         [button setTitle:[NSString stringWithFormat:@"button %zd",i] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor blueColor] forState:UIControlStateSelected];
+        button.titleLabel.font = [UIFont systemFontOfSize:13];
         button.tag = TempTag + i;
         [button addTarget:self action:@selector(clickButton:) forControlEvents:UIControlEventTouchUpInside];
         [_buttons addObject:button];
+        if (i == 0) {
+            button.selected = YES;
+            button.transform = CGAffineTransformScale(button.transform , 1.3, 1.3);;
+            self.preButton = button;
+        }
     }
 }
 
@@ -51,8 +59,21 @@ static NSInteger TempTag = 12121212121;
 }
 
 - (void)clickButton:(UIButton *)sender{
-    NSInteger index = sender.tag - TempTag;
+    sender.transform = CGAffineTransformIdentity;
+    self.preButton.transform = CGAffineTransformIdentity;
+    self.preButton.selected = NO;
     
+    [UIView animateWithDuration:0.5 animations:^{
+        self.preButton.transform = CGAffineTransformScale(self.preButton.transform , 1, 1);
+        sender.selected = YES;
+        self.preButton = sender;
+        sender.transform = CGAffineTransformScale(self.preButton.transform , 1.3, 1.3);
+    }];
+    
+
+    NSInteger index = sender.tag - TempTag;
+//    self.switchButtonBlock ? self.switchButtonBlock(index) : nil;
+    SAFE_BLOCK(self.switchButtonBlock,index);
 }
 
 @end

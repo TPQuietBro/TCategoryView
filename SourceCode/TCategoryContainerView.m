@@ -26,7 +26,6 @@
 
 - (void)initSubviews{
     self.pagingEnabled = YES;
-    
     for (NSInteger i = 0; i < self.views.count; ++i) {
         CGFloat red = arc4random_uniform(256)/ 255.0;
         CGFloat green = arc4random_uniform(256)/ 255.0;
@@ -47,5 +46,11 @@
     }
 }
 
+- (void)setCurrentIndex:(NSInteger)currentIndex{
+    _currentIndex = currentIndex;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.contentOffset = CGPointMake(self.frame.size.width * currentIndex, 0);
+    }];
+}
 
 @end

@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TCategoryHeaderView : UIScrollView
+@property (nonatomic, strong) void(^switchButtonBlock)(NSInteger index);
 - (instancetype)initWithTitles:(NSArray *)titles;
 @end
 

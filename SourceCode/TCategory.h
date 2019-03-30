@@ -12,4 +12,9 @@
 #import "TCategoryView.h"
 #import "Masonry.h"
 
+#define WEAK_SELF __weak typeof(self) weakSelf = self
+#define STRONG_SELF __strong typeof(weakSelf) strongSelf = weakSelf
+
+#define SAFE_BLOCK(block,...) block ? block(__VA_ARGS__) : nil
+
 #endif /* TCategory_h */

@@ -13,6 +13,7 @@
 @interface TCategoryView()
 @property (nonatomic, strong) TCategoryHeaderView *headerView;
 @property (nonatomic, strong) TCategoryContainerView *contentView;
+@property (nonatomic, assign) NSInteger currentIndex;
 @end
 @implementation TCategoryView
 - (instancetype)init
@@ -27,10 +28,18 @@
     TCategoryHeaderView *headerView = [[TCategoryHeaderView alloc] initWithTitles:@[@"",@"",@"",@"",@"",@""]];
     _headerView = headerView;
     headerView.backgroundColor = [UIColor redColor];
+    WEAK_SELF;
+    headerView.switchButtonBlock = ^(NSInteger index) {
+        STRONG_SELF;
+        strongSelf.currentIndex = index;
+        strongSelf.contentView.currentIndex = index;
+        NSLog(@"%zd",index);
+    };
     
     TCategoryContainerView *contentView = [[TCategoryContainerView alloc] initWithContentViews:@[@"",@"",@"",@"",@"",@""]];
     _contentView = contentView;
     contentView.backgroundColor = [UIColor orangeColor];
+    contentView.delegate = self;
     [self addSubview:contentView];
     [self addSubview:self.headerView];
 }
